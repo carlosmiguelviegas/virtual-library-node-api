@@ -40,6 +40,7 @@ userSchema.pre('save', async function(next) {
 
   // assingning a field as undefined will cause the field not to be persisted in db
   this.passwordConfirm = undefined;
+  next();
 
 })
 
