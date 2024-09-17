@@ -16,12 +16,12 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Password is mandatory'],
-    minlength: 8
+    minlength: 3
   },
   passwordConfirm: {
     type: String,
     required: [true, 'Please confirm the password'],
-    minlength: 8
+    minlength: 3
   }
 });
 
