@@ -42,7 +42,9 @@ userSchema.pre('save', async function(next) {
   this.passwordConfirm = undefined;
   next();
 
-})
+});
+
+userSchema.methods.correctPassword = async (loginPassword, userPassword) => await bcrypt.compare(loginPassword, userPassword);
 
 const User = mongoose.model('User', userSchema);
 
