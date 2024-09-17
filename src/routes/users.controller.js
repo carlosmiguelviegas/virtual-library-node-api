@@ -15,7 +15,7 @@ const signup = async(req, res) => {
     const savedUser = await User.create(newUser);
     return res.status(201).json(savedUser);
   } catch(error) {
-    return res.status(400).json(error);
+    return res.status(400).json(error['message']);
   }
 
 };
