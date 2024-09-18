@@ -73,12 +73,24 @@ const loggedInGuard = async(req, res, next) => {
   }
 
   // Grant access to protected route
+  req.user = user;
   next();
 
+};
+
+const restrictTo = (...roles) => {
+  return (req, res, next) => {
+    // roles ['admin'] role='user'
+    if (!roles.includes(req['user']['role'])) {
+      return res.status(403).json({ message: 'You are not allowed to perform this operation.' });
+    }
+    next();
+  };
 };
 
 module.exports = {
   signup,
   login,
-  loggedInGuard
+  loggedInGuard,
+  restrictTo
 };
