@@ -11,13 +11,15 @@ const createToken = id => {
 
 const signup = async(req, res) => {
   
-  const { name, email, password, passwordConfirm } = req.body;
+  const { name, email, password, passwordConfirm, role } = req.body;
   
   const newUser = {
     name,
     email,
     password,
-    passwordConfirm
+    passwordConfirm,
+    role,
+    creationDate: Date.now()
   };
 
   try {
@@ -46,7 +48,7 @@ const login = async(req, res) => {
 
   const token = createToken(user['_id']);
 
-  return res.status(200).setHeader('token', token).json({});
+  return res.status(200).setHeader('token', token).json(user);
 
 };
 
