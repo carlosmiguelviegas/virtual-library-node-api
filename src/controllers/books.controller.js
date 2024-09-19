@@ -13,6 +13,21 @@ const getAllBooks = async(req, res) => {
 
 const createNewBook = async(req, res) => {
 
+  const { title, category, quantity } = req.body;
+  
+  const newBook = {
+    title,
+    category,
+    quantity
+  };
+
+  try {
+    const savedBook = await Book.create(newBook);
+    return res.status(201).json(savedBook);
+  } catch(error) {
+    return res.status(400).json(error['message']);
+  }
+
 };
 
 module.exports = {

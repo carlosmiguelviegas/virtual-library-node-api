@@ -5,29 +5,29 @@ const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'The name is mandatory']
+    required: [true, 'The name is mandatory.']
   },
   email: {
     type: String,
-    required: [true, 'The email is mandatory'],
+    required: [true, 'The email is mandatory.'],
     unique: true,
-    validate: [validator.isEmail, 'Please provide a valid email']
+    validate: [validator.isEmail, 'Please provide a valid email.']
   },
   password: {
     type: String,
     required: [true, 'Password is mandatory'],
-    minlength: 3
+    minlength: [3, 'The password must be at least 3 characters long.']
   },
   passwordConfirm: {
     type: String,
     required: [true, 'Please confirm the password'],
-    minlength: 3,
+    minlength: [3, 'The password must be at least 3 characters long.'],
     validate: {
       // This only works on CREATE and SAVE!
       validator: function(el) {
         return el === this.password;
       },
-      message: 'Passwords are not the same'
+      message: 'Passwords are not the same.'
     }
   },
   role: {
