@@ -46,9 +46,36 @@ const findMyProfile = async(req, res) => {
 
 };
 
+const filterObject = (obj, ...fields) => {
+
+  const newObj = {};
+
+  Object.keys(obj).forEach(
+    el => {
+      if (fields.includes(el)) newObj[el] = obj[el]; 
+    }
+  );
+
+  return newObj;
+
+};
+
+const updateUserProfile = async(req, res) => {
+
+  if (req['body']['password'] || req['body']['passwordConfirm']) return res.status(400).json({ message: 'This route is not for password updates.'});  
+
+  const filteredObj = filterObject(req['body'], 'name', 'email');
+
+  const updatedUser = await User.findByIdAndUpdate(req['params']['id'], filteredObj, { new: true, runValidators: true });
+
+  return res.status(200).json(updatedUser);
+
+};
+
 module.exports = {
   getAllActiveUsers,
   disableUser,
   findUserById,
-  findMyProfile
+  findMyProfile,
+  updateUserProfile
 };
