@@ -30,7 +30,19 @@ const createNewBook = async(req, res) => {
 
 };
 
+const deleteBook = async(req, res) => {
+
+  try {
+    await Book.findByIdAndDelete(req['params']['id']);
+    return res.status(204).json({ message: 'Operation successfully completed.' });
+  } catch(error) {
+    return res.status(400).json(error['message']);
+  }
+
+};
+
 module.exports = {
   getAllBooks,
-  createNewBook
+  createNewBook,
+  deleteBook
 };
