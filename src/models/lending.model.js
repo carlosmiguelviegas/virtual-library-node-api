@@ -13,7 +13,7 @@ const lendingSchema = new mongoose.Schema({
   },
   lendingDate: {
     type: Date,
-    required: true
+    required: [ true, 'The lending date is mandatory.' ]
   },
   returnDate: Date,
   state: {

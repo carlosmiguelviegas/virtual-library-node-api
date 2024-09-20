@@ -1,4 +1,5 @@
 const Book = require('../models/book.model');
+const Lending = require('../models/lending.model');
 
 const getAllBooks = async(req, res) => {
 
@@ -41,8 +42,40 @@ const deleteBook = async(req, res) => {
 
 };
 
+const rentBook = async(req, res) => {
+
+  const bookId = req['params']['id'];
+  const userId = req['user']['_id'].toString();
+
+  const sameBookAndOpen = await Lending.findOne({ user: userId, book: bookId, state: 'open' });
+
+  if (sameBookAndOpen) return res.status(400).json({ message: 'Book already rented by the User.' });
+  
+  const book = await Book.findById(bookId);
+
+  if (!book) return res.status(400).json({ message: 'Book not found with that id.' });
+
+  if (!book['availability']) return res.status(400).json({ message: 'It was not possible to lend the Book as it is not available.' });
+
+  const newLending = {
+    user: userId,
+    book: bookId,
+    lendingDate: Date.now()
+  };
+
+  const lending = await Lending.create(newLending);
+
+  if (lending) {
+    book['quantity'] = book['quantity'] - 1;
+    await book.save();
+    return res.status(200).json({ message: 'Operation successfully completed.' });
+  }
+
+};
+
 module.exports = {
   getAllBooks,
   createNewBook,
-  deleteBook
+  deleteBook,
+  rentBook
 };
