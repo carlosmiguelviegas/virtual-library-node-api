@@ -47,7 +47,7 @@ const rentBook = async(req, res) => {
   const bookId = req['params']['id'];
   const userId = req['user']['_id'].toString();
 
-  const sameBookAndOpen = await Lending.findOne({ user: userId, book: bookId, state: 'open' });
+  const sameBookAndOpen = await findBookLending(userId, bookId);
 
   if (sameBookAndOpen) return res.status(400).json({ message: 'Book already rented by the User.' });
   
@@ -73,9 +73,39 @@ const rentBook = async(req, res) => {
 
 };
 
+const findBookLending = async(userId, bookId) => {
+  return await Lending.findOne({ user: userId, book: bookId, state: 'open' });
+};
+
+const closeBookLending = async(lending) => {
+  lending['state'] = 'closed';
+  lending['returnDate'] = Date.now();
+  await lending.save();
+};
+
+const returnBook = async(req, res) => {
+
+  const bookId = req['params']['id'];
+  const userId = req['user']['_id'].toString();
+
+  const lending = await findBookLending(userId, bookId);
+
+  if (!lending) return res.status(400).json({ message: 'It was not possible to return the Book as the User has not rented the Book.' });
+  
+  const book = await Book.findById(bookId);
+
+  await closeBookLending(lending);
+
+  book['quantity'] = book['quantity'] + 1;
+  await book.save();
+  return res.status(200).json({ message: 'Operation successfully completed.' });
+
+};
+
 module.exports = {
   getAllBooks,
   createNewBook,
   deleteBook,
-  rentBook
+  rentBook,
+  returnBook
 };
