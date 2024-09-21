@@ -33,8 +33,14 @@ const createNewBook = async(req, res) => {
 
 const deleteBook = async(req, res) => {
 
+  const bookId = req['params']['id'];
+
+  const bookOpenLendings = await Lending.find({ book: bookId, state: 'open' });
+
+  if (bookOpenLendings.length > 0) return res.status(400).json({ message: 'Operation not possible as the Book is not available.' });
+
   try {
-    await Book.findByIdAndDelete(req['params']['id']);
+    await Book.findByIdAndDelete(bookId);
     return res.status(204).json({ message: 'Operation successfully completed.' });
   } catch(error) {
     return res.status(400).json(error['message']);
