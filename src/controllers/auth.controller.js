@@ -48,7 +48,7 @@ const login = async(req, res) => {
 
   const token = createToken(user['_id']);
 
-  return res.status(200).setHeader('token', token).json(user);
+  return res.status(200).setHeader('token', token).setHeader('Access-Control-Expose-Headers', [ 'token' ]).json(user);
 
 };
 
