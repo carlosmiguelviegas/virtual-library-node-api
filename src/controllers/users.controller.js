@@ -21,7 +21,7 @@ const disableUser = async(req, res) => {
   if (!user['active']) return res.status(400).json({ message: 'Operation not possible, because the User is already disabled.'});
 
   const userOpenLendings = await Lending.find({ user: userId, state: 'open' });
-  if (userOpenLendings.length > 0) return res.status(400).json({ message: 'User has rented books, so it was impossible to disable him/her.' });
+  if (userOpenLendings.length) return res.status(400).json({ message: 'User has rented books, so it was impossible to disable him/her.' });
 
   user['active'] = false;
   user.save({ validateBeforeSave: false });
