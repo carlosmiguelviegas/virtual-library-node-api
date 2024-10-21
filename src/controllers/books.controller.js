@@ -37,7 +37,7 @@ const deleteBook = async(req, res) => {
 
   const bookOpenLendings = await Lending.find({ book: bookId, state: 'open' });
 
-  if (bookOpenLendings.length > 0) return res.status(400).json({ message: 'Operation not possible as the Book is not available.' });
+  if (bookOpenLendings.length) return res.status(400).json({ message: 'Operation not possible as the Book is not available.' });
 
   try {
     await Book.findByIdAndDelete(bookId);
