@@ -27,4 +27,3 @@ jobs:
           node-version: 20
       - name: Start server
         run: npm run dev
-
