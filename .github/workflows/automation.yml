@@ -12,3 +12,15 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: npm install
+  start:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Start server
+        run: npm start
+
