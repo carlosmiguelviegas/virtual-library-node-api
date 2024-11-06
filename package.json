@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/server.js"
+    "start": "nodemon src/server.js",
+    "dev": "node src/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,7 +18,9 @@
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.2",
-    "validator": "^13.12.0",
+    "validator": "^13.12.0"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.4"
   }
 }
