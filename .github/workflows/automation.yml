@@ -14,9 +14,9 @@ jobs:
         run: npm install
   start:
     env:
-      DATABASE = ${{ secrets.DATABASE }}
-      DATABASE_PASSWORD = ${{ secrets.DATABASE_PASSWORD }}
-      PORT = 8000
+      DATABASE: ${{ secrets.DATABASE }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      PORT: 8000
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
