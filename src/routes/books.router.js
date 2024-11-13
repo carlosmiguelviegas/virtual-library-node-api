@@ -1,6 +1,7 @@
 const express = require('express');
 
-const { loggedInGuard, restrictTo } = require('./../controllers/auth.controller');
+const { loggedInGuard } = require('./../middlewares/logged-in-guard');
+const { restrictTo } = require('./../middlewares/restrict-to');
 const { getAllBooks, createNewBook, deleteBook, rentBook, returnBook } = require('./../controllers/books.controller');
 
 const booksRouter = express.Router();

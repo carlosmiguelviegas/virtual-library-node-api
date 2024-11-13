@@ -50,7 +50,7 @@ const findUserById = async(req, res) => {
 
 };
 
-const findMyProfile = async(req, res) => {
+const currentUserProfile = async(req, res) => {
 
   const user = await User.findById(req['user']['_id']);
   
@@ -90,6 +90,6 @@ module.exports = {
   getAllActiveUsers,
   disableUser,
   findUserById,
-  findMyProfile,
+  currentUserProfile,
   updateUserProfile
 };
