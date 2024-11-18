@@ -1,10 +1,13 @@
 const Book = require('../models/book.model');
 const Lending = require('../models/lending.model');
+const { getPagination } = require('./../services/query');
 
 const getAllBooks = async(req, res) => {
 
+  const { skip, limit } = getPagination(req['query']);
+
   try {
-    const booksList = await Book.find({});
+    const booksList = await Book.find({}).skip(skip).limit(limit);
     return res.status(200).json(booksList);
   } catch(error) {
     return res.status(400).json(error['message']);
