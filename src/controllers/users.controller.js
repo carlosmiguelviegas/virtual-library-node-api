@@ -1,10 +1,13 @@
 const User = require('../models/user.model');
 const Lending = require('../models/lending.model');
+const { getPagination } = require('./../services/query');
 
 const getAllActiveUsers = async(req, res) => {
 
+  const { skip, limit } = getPagination(req['query']);
+
   try {
-    const usersList = await User.find({ active: true }).select('-password');
+    const usersList = await User.find({ active: true }).select('-password').skip(skip).limit(limit);
     return res.status(200).json(usersList);
   } catch(error) {
     return res.status(400).json(error['message']);
