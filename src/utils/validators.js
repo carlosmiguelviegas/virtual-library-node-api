@@ -1,16 +1,26 @@
 const { body } = require('express-validator');
 
-const { EMAIL_ADDRESS_REQUIRED, INVALID_EMAIL_ADDRESS, PASSWORD_REQUIRED, PASSWORD_INVALID_LENGTH } = require('./errors-messages');
+const { FIELD_REQUIRED, FIELD_INVALID_LENGTH, INVALID_EMAIL_ADDRESS, PASSWORDS_NOT_MATCHING } = require('./errors-messages');
+
+const inputValidator = field => body(`${field}`)
+  .notEmpty().withMessage(FIELD_REQUIRED(field))
+  .isLength({ min: 3 }).withMessage(FIELD_INVALID_LENGTH(field));
 
 const emailValidator = () => body('email')
-  .notEmpty().withMessage(EMAIL_ADDRESS_REQUIRED)
+  .notEmpty().withMessage(FIELD_REQUIRED('email address'))
   .isEmail().withMessage(INVALID_EMAIL_ADDRESS);
 
-const passwordValidator = () => body('password')
-  .notEmpty().withMessage(PASSWORD_REQUIRED)
-  .isLength({ min: 3 }).withMessage(PASSWORD_INVALID_LENGTH);
+const passwordsMatchValidator = () => body('passwordConfirm')
+  .custom((value, { req }) => {
+    if (value !== req.body.password) throw new Error(PASSWORDS_NOT_MATCHING);
+    return true;
+  }
+);
+
+
 
 module.exports = {
+  inputValidator,
   emailValidator,
-  passwordValidator
+  passwordsMatchValidator,
 };
