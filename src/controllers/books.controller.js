@@ -1,6 +1,6 @@
 const Book = require('../models/book.model');
 const Lending = require('../models/lending.model');
-const { getPagination } = require('./../services/query');
+const { getPagination } = require('../utils/query');
 
 const getAllBooks = async(req, res) => {
 

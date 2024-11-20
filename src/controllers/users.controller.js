@@ -1,6 +1,6 @@
 const User = require('../models/user.model');
 const Lending = require('../models/lending.model');
-const { getPagination } = require('./../services/query');
+const { getPagination } = require('../utils/query');
 
 const getAllActiveUsers = async(req, res) => {
 
