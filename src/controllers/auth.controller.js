@@ -9,7 +9,7 @@ const createToken = id => {
 };
 
 const signup = async(req, res) => {
-  
+
   const { name, email, password, passwordConfirm, role } = req.body;
   
   const newUser = {
