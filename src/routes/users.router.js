@@ -4,14 +4,15 @@ const { signup, login } = require('./../controllers/auth.controller');
 const { loggedInGuard } = require('./../middlewares/logged-in-guard');
 const { restrictTo } = require('./../middlewares/restrict-to');
 const { validateRequestInputs } = require('./../middlewares/validate-request-inputs');
-const { emailValidator } = require('./../utils/reusable-validators/email-validator');
+const { emailValidator, passwordValidator } = require('../utils/validators');
 const { getAllActiveUsers, disableUser, findUserById, currentUserProfile, updateUserProfile } = require('./../controllers/users.controller');
 
 const usersRouter = express.Router();
 
 usersRouter.post('/signup',
   [
-    emailValidator()
+    emailValidator(),
+    passwordValidator()
   ],
   validateRequestInputs,
   signup
