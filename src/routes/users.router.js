@@ -20,9 +20,16 @@ usersRouter.post('/signup',
   signup
 );
 
-usersRouter.post('/login', login);
+usersRouter.post('/login',
+  [
+    emailValidator(),
+    inputValidator('password')
+  ],
+  validateRequestInputs,
+  login
+);
 
-usersRouter.get('/my-profile', loggedInGuard, currentUserProfile);
+usersRouter.get('/current-user-profile', loggedInGuard, currentUserProfile);
 
 usersRouter.patch('/:id', loggedInGuard, updateUserProfile);
 
