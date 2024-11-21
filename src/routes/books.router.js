@@ -14,7 +14,7 @@ booksRouter.post('/',
   [
     inputValidator('title', 2),
     inputValidator('category', 2),
-    zeroOrPositiveValidator('quuantity')
+    zeroOrPositiveValidator('quantity')
   ],
   validateRequestInputs,    
   loggedInGuard, restrictTo('admin'), createNewBook);

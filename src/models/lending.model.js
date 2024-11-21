@@ -4,16 +4,16 @@ const lendingSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
-    required: [ true, 'The lending must belong to an user.' ]
+    required: true
   },
   book: {
     type: mongoose.Schema.ObjectId,
     ref: 'Book',
-    required: [ true, 'The lending must belong to a book.' ]
+    required: true
   },
   lendingDate: {
     type: Date,
-    required: [ true, 'The lending date is mandatory.' ]
+    required: true
   },
   returnDate: Date,
   state: {
