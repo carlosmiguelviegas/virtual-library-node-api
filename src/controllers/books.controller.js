@@ -1,17 +1,16 @@
 const Book = require('../models/book.model');
 const Lending = require('../models/lending.model');
+const { NOT_POSSIBLE_DELETE_BOOK, OPERATION_SUCCESSFULLY_COMPLETED, NOT_POSSIBLE_RENT_SAME_BOOK, NOT_FOUND_ERROR, UNAVAILABLE_BOOK, NOT_POSSIBLE_RETURN_BOOK } = require('../utils/messages');
 const { getPagination } = require('../utils/query');
+const { OperationNotPossibleError } = require('./../errors/operation-not-possible-error');
+const { ResourceNotFoundError } = require('./../errors/resource-not-found-error');
 
 const getAllBooks = async(req, res) => {
 
   const { skip, limit } = getPagination(req['query']);
-
-  try {
-    const booksList = await Book.find({}).skip(skip).limit(limit);
-    return res.status(200).json(booksList);
-  } catch(error) {
-    return res.status(400).json(error['message']);
-  }
+  
+  const booksList = await Book.find({}).skip(skip).limit(limit);
+  return res.status(200).json(booksList);
 
 };
 
@@ -25,12 +24,8 @@ const createNewBook = async(req, res) => {
     quantity
   };
 
-  try {
-    const savedBook = await Book.create(newBook);
-    return res.status(201).json(savedBook);
-  } catch(error) {
-    return res.status(400).json(error['message']);
-  }
+  const savedBook = await Book.create(newBook);
+  return res.status(201).json(savedBook);
 
 };
 
@@ -40,14 +35,10 @@ const deleteBook = async(req, res) => {
 
   const bookOpenLendings = await Lending.find({ book: bookId, state: 'open' });
 
-  if (bookOpenLendings.length) return res.status(400).json({ message: 'Operation not possible as the Book is not available.' });
+  if (bookOpenLendings.length) return next(new OperationNotPossibleError(NOT_POSSIBLE_DELETE_BOOK));
 
-  try {
-    await Book.findByIdAndDelete(bookId);
-    return res.status(204).json({ message: 'Operation successfully completed.' });
-  } catch(error) {
-    return res.status(400).json(error['message']);
-  }
+  await Book.findByIdAndDelete(bookId);
+  return res.status(204).json({ message: OPERATION_SUCCESSFULLY_COMPLETED });
 
 };
 
@@ -58,13 +49,13 @@ const rentBook = async(req, res) => {
 
   const sameBookAndOpen = await findBookLending(userId, bookId);
 
-  if (sameBookAndOpen) return res.status(400).json({ message: 'Book already rented by the User.' });
+  if (sameBookAndOpen) return next(new OperationNotPossibleError(NOT_POSSIBLE_RENT_SAME_BOOK));
   
   const book = await Book.findById(bookId);
 
-  if (!book) return res.status(400).json({ message: 'Book not found with that id.' });
+  if (!book) return next(new ResourceNotFoundError(NOT_FOUND_ERROR('Book')));
 
-  if (!book['availability']) return res.status(400).json({ message: 'It was not possible to lend the Book as it is not available.' });
+  if (!book['availability']) return next(new OperationNotPossibleError(UNAVAILABLE_BOOK));
 
   const newLending = {
     user: userId,
@@ -77,7 +68,7 @@ const rentBook = async(req, res) => {
   if (lending) {
     book['quantity'] = book['quantity'] - 1;
     await book.save();
-    return res.status(200).json({ message: 'Operation successfully completed.' });
+    return res.status(200).json({ message: OPERATION_SUCCESSFULLY_COMPLETED });
   }
 
 };
@@ -99,7 +90,7 @@ const returnBook = async(req, res) => {
 
   const lending = await findBookLending(userId, bookId);
 
-  if (!lending) return res.status(400).json({ message: 'It was not possible to return the Book as the User has not rented the Book.' });
+  if (!lending) return next(new OperationNotPossibleError(NOT_POSSIBLE_RETURN_BOOK));
   
   const book = await Book.findById(bookId);
 
@@ -107,7 +98,7 @@ const returnBook = async(req, res) => {
 
   book['quantity'] = book['quantity'] + 1;
   await book.save();
-  return res.status(200).json({ message: 'Operation successfully completed.' });
+  return res.status(200).json({ message: OPERATION_SUCCESSFULLY_COMPLETED });
 
 };
 

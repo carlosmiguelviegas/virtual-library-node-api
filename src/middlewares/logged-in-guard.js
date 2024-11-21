@@ -1,6 +1,10 @@
 const { promisify } = require('util');
-const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
+
+const User = require('../models/user.model');
+const { USER_NOT_LOGGED_IN, USER_NO_LONGER_EXISTS } = require('../utils/messages');
+const { NotAuthorizedError } = require('./../errors/not-authorized-error');
+const { ResourceNotFoundError } = require('./../errors/resource-not-found-error');
 
 const loggedInGuard = async(req, res, next) => {
 
@@ -11,7 +15,7 @@ const loggedInGuard = async(req, res, next) => {
   }
 
   if (!token) {
-    return res.status(401).json({ message: 'Please log in to get access.' });
+    return next(new NotAuthorizedError(USER_NOT_LOGGED_IN));
   }
 
   // Verification token
@@ -21,7 +25,7 @@ const loggedInGuard = async(req, res, next) => {
   const user = await User.findById(verified['id']);
 
   if (!user) {
-    return res.status(401).json({ message: 'The user with the given token no longer exists.' });
+    return next(new ResourceNotFoundError(USER_NO_LONGER_EXISTS));
   }
 
   // Grant access to protected route
