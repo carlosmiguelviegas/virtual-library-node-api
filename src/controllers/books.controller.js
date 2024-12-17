@@ -29,7 +29,7 @@ const createNewBook = async(req, res) => {
 
 };
 
-const deleteBook = async(req, res) => {
+const deleteBook = async(req, res, next) => {
 
   const bookId = req['params']['id'];
 
@@ -42,7 +42,7 @@ const deleteBook = async(req, res) => {
 
 };
 
-const rentBook = async(req, res) => {
+const rentBook = async(req, res, next) => {
 
   const bookId = req['params']['id'];
   const userId = req['user']['_id'].toString();
@@ -83,7 +83,7 @@ const closeBookLending = async(lending) => {
   await lending.save();
 };
 
-const returnBook = async(req, res) => {
+const returnBook = async(req, res, next) => {
 
   const bookId = req['params']['id'];
   const userId = req['user']['_id'].toString();
