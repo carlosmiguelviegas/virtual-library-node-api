@@ -18,7 +18,7 @@ const getAllActiveUsers = async(req, res) => {
 
 };
 
-const disableUser = async(req, res) => {
+const disableUser = async(req, res, next) => {
 
   const userId = req['user']['_id'].toString();
   if (req['params']['id'] === userId) return next(new OperationNotPossibleError(NOT_POSSIBLE_DISABLE_ONESELF));
@@ -36,7 +36,7 @@ const disableUser = async(req, res) => {
 
 };
 
-const getUserById = async(req, res) => {
+const getUserById = async(req, res, next) => {
 
   const user = await User.findById(req['params']['id']);
   
@@ -46,7 +46,7 @@ const getUserById = async(req, res) => {
 
 };
 
-const findUserById = async(req, res) => {
+const findUserById = async(req, res, next) => {
 
   const user = await User.findById(req['params']['id']);
   
@@ -56,7 +56,7 @@ const findUserById = async(req, res) => {
 
 };
 
-const currentUserProfile = async(req, res) => {
+const currentUserProfile = async(req, res, next) => {
 
   const user = await User.findById(req['user']['_id']);
   
