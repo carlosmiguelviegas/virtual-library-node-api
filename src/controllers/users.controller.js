@@ -11,7 +11,8 @@ const getAllActiveUsers = async(req, res) => {
 
   try {
     const usersList = await User.find({ active: true }).select('-password').skip(skip).limit(limit);
-    return res.status(200).json(usersList);
+    const total = await User.countDocuments({ active: true });
+    return res.status(200).json({ usersList, total });
   } catch(error) {
     return res.status(400).json(error['message']);
   }

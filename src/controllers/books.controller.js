@@ -10,7 +10,8 @@ const getAllBooks = async(req, res) => {
   const { skip, limit } = getPagination(req['query']);
   
   const booksList = await Book.find({}).skip(skip).limit(limit);
-  return res.status(200).json(booksList);
+  const total = await Book.countDocuments();
+  return res.status(200).json({ booksList, total });
 
 };
 
