@@ -47,6 +47,10 @@ const getUserById = async(req, res, next) => {
 
 };
 
+const enableUser = async(req, res, next) => {
+  // it was intentional
+};
+
 const findUserById = async(req, res, next) => {
 
   const user = await User.findById(req['params']['id']);
@@ -94,6 +98,7 @@ const updateUserProfile = async(req, res) => {
 module.exports = {
   getAllActiveUsers,
   disableUser,
+  enableUser,
   findUserById,
   currentUserProfile,
   updateUserProfile
