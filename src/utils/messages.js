@@ -15,6 +15,7 @@ const USER_NOT_LOGGED_IN = 'Please log in to get access.';
 const USER_NO_LONGER_EXISTS = 'The user with the given token no longer exists.';
 const OPERATION_NOT_ALLOWED = 'Not allowed to perform this operation.';
 const NOT_POSSIBLE_DISABLE_ONESELF = 'User cannot disable himself.';
+const NOT_POSSIBLE_ENAABLE_ONESELF = 'User cannot enable himself.';
 const DISABLED_USER_ERROR = 'Operation not possible, because the user is already disabled.';
 const DISABLED_USER_ERROR_RENTED_BOOKS = 'User has rented books, so it was impossible to disable him/her.';
 const ROUTE_NOT_FOR_PASSWORD_UPDATES = 'This route is not for password updates.';
@@ -37,6 +38,7 @@ module.exports = {
   USER_NO_LONGER_EXISTS,
   OPERATION_NOT_ALLOWED,
   NOT_POSSIBLE_DISABLE_ONESELF,
+  NOT_POSSIBLE_ENAABLE_ONESELF,
   DISABLED_USER_ERROR,
   DISABLED_USER_ERROR_RENTED_BOOKS,
   ROUTE_NOT_FOR_PASSWORD_UPDATES
