@@ -2,7 +2,7 @@ const User = require('../models/user.model');
 const Lending = require('../models/lending.model');
 const { getPagination } = require('../utils/query');
 const { OperationNotPossibleError } = require('./../errors/operation-not-possible-error');
-const { NOT_POSSIBLE_DISABLE_ONESELF, DISABLED_USER_ERROR, DISABLED_USER_ERROR_RENTED_BOOKS, OPERATION_SUCCESSFULLY_COMPLETED, NOT_FOUND_ERROR } = require('./../utils/messages');
+const { NOT_POSSIBLE_DISABLE_ONESELF, DISABLED_USER_ERROR, DISABLED_USER_ERROR_RENTED_BOOKS, OPERATION_SUCCESSFULLY_COMPLETED, NOT_FOUND_ERROR, NOT_POSSIBLE_ENABLE_ONESELF, ENABLED_USER_ERROR } = require('./../utils/messages');
 const { ResourceNotFoundError } = require('../errors/resource-not-found-error');
 
 const getAllActiveUsers = async(req, res) => {
@@ -44,6 +44,21 @@ const getUserById = async(req, res, next) => {
   if (!user) return next(new ResourceNotFoundError(NOT_FOUND_ERROR('User')));
 
   return user;
+
+};
+
+const enableUser = async(req, res, next) => {
+
+  const userId = req['user']['_id'].toString();
+  if (req['params']['id'] === userId) return next(new OperationNotPossibleError(NOT_POSSIBLE_ENABLE_ONESELF));
+
+  const user = await getUserById(req, res);
+  if (user['active']) return next(new OperationNotPossibleError(ENABLED_USER_ERROR));
+
+  user['active'] = true;
+  user.save({ validateBeforeSave: false });
+
+  return res.status(200).json({ message: OPERATION_SUCCESSFULLY_COMPLETED});
 
 };
 
@@ -94,6 +109,7 @@ const updateUserProfile = async(req, res) => {
 module.exports = {
   getAllActiveUsers,
   disableUser,
+  enableUser,
   findUserById,
   currentUserProfile,
   updateUserProfile

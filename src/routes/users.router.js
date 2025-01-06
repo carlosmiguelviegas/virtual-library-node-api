@@ -5,7 +5,7 @@ const { loggedInGuard } = require('./../middlewares/logged-in-guard');
 const { restrictTo } = require('./../middlewares/restrict-to');
 const { validateRequestInputs } = require('./../middlewares/validate-request-inputs');
 const { inputValidator, emailValidator, emailInUseValidator, notAllowUpdatePasswordValidator, passwordsMatchValidator } = require('../utils/validators');
-const { getAllActiveUsers, disableUser, findUserById, currentUserProfile, updateUserProfile } = require('./../controllers/users.controller');
+const { getAllActiveUsers, disableUser, enableUser, findUserById, currentUserProfile, updateUserProfile } = require('./../controllers/users.controller');
 
 const usersRouter = express.Router();
 
@@ -44,6 +44,8 @@ usersRouter.patch('/:id', loggedInGuard, updateUserProfile);
 usersRouter.get('/', loggedInGuard, restrictTo('admin'), getAllActiveUsers);
 
 usersRouter.patch('/disable/:id', loggedInGuard, restrictTo('admin'), disableUser);
+
+usersRouter.patch('/enable/:id', loggedInGuard, restrictTo('admin'), enableUser);
 
 usersRouter.get('/:id', loggedInGuard, restrictTo('admin'), findUserById);
 
