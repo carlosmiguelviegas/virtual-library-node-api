@@ -21,7 +21,15 @@ const getAllActiveUsers = async(req, res) => {
 
 const getAllInactiveUsers = async(req, res) => {
 
-  // it was intentional
+  const { skip, limit } = getPagination(req['query']);
+
+  try {
+    const usersList = await User.find({ active: false }).select('-password').skip(skip).limit(limit);
+    const total = await User.countDocuments({ active: false });
+    return res.status(200).json({ usersList, total });
+  } catch(error) {
+    return res.status(400).json(error['message']);
+  }
 
 };
 
