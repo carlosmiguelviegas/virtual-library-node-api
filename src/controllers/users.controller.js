@@ -19,6 +19,12 @@ const getAllActiveUsers = async(req, res) => {
 
 };
 
+const getAllInactiveUsers = async(req, res) => {
+
+  // it was intentional
+
+};
+
 const disableUser = async(req, res, next) => {
 
   const userId = req['user']['_id'].toString();
@@ -108,6 +114,7 @@ const updateUserProfile = async(req, res) => {
 
 module.exports = {
   getAllActiveUsers,
+  getAllInactiveUsers,
   disableUser,
   enableUser,
   findUserById,
