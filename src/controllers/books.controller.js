@@ -15,9 +15,26 @@ const getAllBooks = async(req, res) => {
 
 };
 
+const previewBooksByCategory = async(req, res) => {
+
+  const previewBooksList = await Book.find({ category: req['query']['category'] }).limit(4);
+  return res.status(200).json(previewBooksList);
+
+};
+
+const getBooksByCategory = async(req, res) => {
+
+  const { skip, limit, category } = getPagination(req['query']);
+  
+  const booksList = await Book.find({ category }).skip(skip).limit(limit);
+  const total = await Book.countDocuments({ category });
+  return res.status(200).json({ booksList, total });
+
+};
+
 const createNewBook = async(req, res) => {
 
-  const { title, category, quantity } = req.body;
+  const { title, category, quantity } = req['body'];
   
   const newBook = {
     title,
@@ -105,6 +122,8 @@ const returnBook = async(req, res, next) => {
 
 module.exports = {
   getAllBooks,
+  previewBooksByCategory,
+  getBooksByCategory,
   createNewBook,
   deleteBook,
   rentBook,

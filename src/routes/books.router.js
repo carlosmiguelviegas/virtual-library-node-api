@@ -4,11 +4,15 @@ const { loggedInGuard } = require('./../middlewares/logged-in-guard');
 const { restrictTo } = require('./../middlewares/restrict-to');
 const { validateRequestInputs } = require('./../middlewares/validate-request-inputs');
 const { inputValidator, zeroOrPositiveValidator } = require('../utils/validators');
-const { getAllBooks, createNewBook, deleteBook, rentBook, returnBook } = require('./../controllers/books.controller');
+const { getAllBooks, previewBooksByCategory, getBooksByCategory, createNewBook, deleteBook, rentBook, returnBook } = require('./../controllers/books.controller');
 
 const booksRouter = express.Router();
 
 booksRouter.get('/', loggedInGuard, getAllBooks);
+
+booksRouter.get('/preview', loggedInGuard, previewBooksByCategory);
+
+booksRouter.get('/category', loggedInGuard, getBooksByCategory);
 
 booksRouter.post('/',
   [
