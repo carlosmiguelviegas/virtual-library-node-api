@@ -122,6 +122,8 @@ const returnBook = async(req, res, next) => {
 
 module.exports = {
   getAllBooks,
+  previewBooksByCategory,
+  getBooksByCategory,
   createNewBook,
   deleteBook,
   rentBook,
