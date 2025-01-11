@@ -15,9 +15,21 @@ const getAllBooks = async(req, res) => {
 
 };
 
+const previewBooksByCategory = async(req, res) => {
+
+  // it was intentional
+
+};
+
+const getBooksByCategory = async(req, res) => {
+
+  // it was intentional
+
+};
+
 const createNewBook = async(req, res) => {
 
-  const { title, category, quantity } = req.body;
+  const { title, category, quantity } = req['body'];
   
   const newBook = {
     title,
