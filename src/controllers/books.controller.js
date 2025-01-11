@@ -17,11 +17,12 @@ const getAllBooks = async(req, res) => {
 
 const previewBooksByCategory = async(req, res) => {
 
-  // it was intentional
+  const previewBooksList = await Book.find({ category: req['query']['category'] }).limit(4);
+  return res.status(200).json(previewBooksList);
 
 };
 
-const getBooksByCategory = async(req, res) => {
+const getBooksByCategory = async(req, res) => {// it was intentional
 
   // it was intentional
 
