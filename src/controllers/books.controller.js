@@ -22,9 +22,13 @@ const previewBooksByCategory = async(req, res) => {
 
 };
 
-const getBooksByCategory = async(req, res) => {// it was intentional
+const getBooksByCategory = async(req, res) => {
 
-  // it was intentional
+  const { skip, limit, category } = getPagination(req['query']);
+  
+  const booksList = await Book.find({ category }).skip(skip).limit(limit);
+  const total = await Book.countDocuments({ category });
+  return res.status(200).json({ booksList, total });
 
 };
 
