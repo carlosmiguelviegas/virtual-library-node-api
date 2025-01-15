@@ -17,8 +17,14 @@ const getAllBooks = async(req, res) => {
 
 const previewBooksByCategory = async(req, res) => {
 
-  const previewBooksList = await Book.find({ category: req['query']['category'] }).limit(4);
-  return res.status(200).json(previewBooksList);
+  let obj = {};
+
+  for (let category of req['query']['categories'].split(',')) {
+    const books = await Book.find({ category }).limit(4);
+    obj = { ...obj, [category]: books };
+  }
+
+  return res.status(200).json(obj);
 
 };
 
