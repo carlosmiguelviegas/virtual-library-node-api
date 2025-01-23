@@ -34,7 +34,7 @@ const getBooksByCategory = async(req, res) => {
   
   const booksList = await Book.find({ category }).skip(skip).limit(limit);
   const total = await Book.countDocuments({ category });
-  return res.status(200).json({ booksList, total });
+  return res.status(200).json({ [category]: booksList, total });
 
 };
 
