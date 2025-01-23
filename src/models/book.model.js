@@ -5,9 +5,21 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  author: {
+    type: String,
+    required: true
+  },
+  yearOfPublication: {
+    type: Number,
+    required: true
+  },
   category: {
     type: String,
     enum: [ 'IT', 'SC', 'MT', 'CR', 'RO' ],
+    required: true
+  },
+  description: {
+    type: String,
     required: true
   },
   quantity: {
