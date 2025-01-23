@@ -2,7 +2,7 @@ const { body } = require('express-validator');
 
 const User = require('./../models/user.model');
 
-const { FIELD_REQUIRED, FIELD_INVALID_LENGTH, INVALID_EMAIL_ADDRESS, EMAIL_IN_USE, PASSWORDS_NOT_MATCHING, QUANTITY_NEGATIVE_NOT_ALLOWED, ROUTE_NOT_FOR_PASSWORD_UPDATES } = require('./messages');
+const { FIELD_REQUIRED, FIELD_INVALID_LENGTH, INVALID_EMAIL_ADDRESS, EMAIL_IN_USE, PASSWORDS_NOT_MATCHING, QUANTITY_NEGATIVE_NOT_ALLOWED, ROUTE_NOT_FOR_PASSWORD_UPDATES, YEAR_ZERO_OR_NEGATIVE_NOT_ALLOWED, MINIMUM_YEAR_NOT_ALLOWED } = require('./messages');
 const { BadRequestError } = require('../errors/bad-request-error');
 
 const inputValidator = (field, min = 3) => body(`${field}`)
@@ -43,11 +43,21 @@ const notAllowUpdatePasswordValidator = field => body(`${field}`)
   }
 );
 
+const yearValidator = () => body('yearOfPublication')
+  .notEmpty().withMessage(FIELD_REQUIRED(field))
+  .custom(value => {
+    if (value <= 0) throw new BadRequestError(YEAR_ZERO_OR_NEGATIVE_NOT_ALLOWED);
+    if (value < 1900) throw new BadRequestError(MINIMUM_YEAR_NOT_ALLOWED);
+    return true;
+  }
+);
+
 module.exports = {
   inputValidator,
   emailValidator,
   emailInUseValidator,
   passwordsMatchValidator,
   zeroOrPositiveValidator,
-  notAllowUpdatePasswordValidator
+  notAllowUpdatePasswordValidator,
+  yearValidator
 };
