@@ -20,6 +20,8 @@ const DISABLED_USER_ERROR = 'Operation not possible, because the user is already
 const ENABLED_USER_ERROR = 'Operation not possible, because the user is already enabled.';
 const DISABLED_USER_ERROR_RENTED_BOOKS = 'User has rented books, so it was impossible to disable him/her.';
 const ROUTE_NOT_FOR_PASSWORD_UPDATES = 'This route is not for password updates.';
+const YEAR_ZERO_OR_NEGATIVE_NOT_ALLOWED = 'The year of publication cannot be neither negative nor 0.';
+const MINIMUM_YEAR_NOT_ALLOWED = 'The year of publication must be bigger or equal to 1900.';
 
 module.exports = {
   INVALID_EMAIL_ADDRESS,
@@ -43,5 +45,7 @@ module.exports = {
   DISABLED_USER_ERROR,
   ENABLED_USER_ERROR,
   DISABLED_USER_ERROR_RENTED_BOOKS,
-  ROUTE_NOT_FOR_PASSWORD_UPDATES
+  ROUTE_NOT_FOR_PASSWORD_UPDATES,
+  YEAR_ZERO_OR_NEGATIVE_NOT_ALLOWED,
+  MINIMUM_YEAR_NOT_ALLOWED
 };
