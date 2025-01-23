@@ -30,16 +30,16 @@ usersRouter.post('/login',
   login
 );
 
-usersRouter.get('/current-user-profile',
+usersRouter.get('/current-user-profile', loggedInGuard, currentUserProfile
+);
+
+usersRouter.patch('/:id',
   [
     notAllowUpdatePasswordValidator('password'),
     notAllowUpdatePasswordValidator('passwordConfirm')
   ],
   validateRequestInputs,
-  loggedInGuard, currentUserProfile
-);
-
-usersRouter.patch('/:id', loggedInGuard, updateUserProfile);
+  loggedInGuard, updateUserProfile);
 
 usersRouter.get('/', loggedInGuard, restrictTo('admin'), getAllActiveUsers);
 
