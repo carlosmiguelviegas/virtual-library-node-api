@@ -3,7 +3,7 @@ const express = require('express');
 const { loggedInGuard } = require('./../middlewares/logged-in-guard');
 const { restrictTo } = require('./../middlewares/restrict-to');
 const { validateRequestInputs } = require('./../middlewares/validate-request-inputs');
-const { inputValidator, zeroOrPositiveValidator } = require('../utils/validators');
+const { inputValidator, zeroOrPositiveValidator, yearValidator } = require('../utils/validators');
 const { getAllBooks, previewBooksByCategory, getBooksByCategory, createNewBook, deleteBook, rentBook, returnBook } = require('./../controllers/books.controller');
 
 const booksRouter = express.Router();
@@ -17,7 +17,10 @@ booksRouter.get('/category', loggedInGuard, getBooksByCategory);
 booksRouter.post('/',
   [
     inputValidator('title', 2),
+    inputValidator('author'),
+    yearValidator(),
     inputValidator('category', 2),
+    inputValidator('description', 10),
     zeroOrPositiveValidator('quantity')
   ],
   validateRequestInputs,    
